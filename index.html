@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Cold Cypher</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="shortcut icon" type="image/jpg" href="https://i.imgur.com/MkJ6oDe.png"/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap');
+
+body {
+  background-color: #40c2db;
+  font-family: 'Manrope', sans-serif;
+}
+#main-div {
+  background-color: #eaf48b;
+  box-shadow: rgb(242 178 71 / 50%) 0px 10px 40px -10px;
+  border:1px solid #1b2436; border-radius:12px; text-align:center; margin:0 auto;
+}
+h1 {
+  letter-spacing:.5px;
+  font-weight:700;
+  /* font-family: 'Mulish', sans-serif;  font-size:19px; margin-bottom:20px; */
+  font-family: 'Caveat', sans-serif;
+  font-size:28px;
+  margin-bottom:17px;
+  text-transform: capitalize;
+  color: #1b2436;
+}
+a {
+  /* color:#159ab4; */
+}
+input {
+  width:512px;
+}
+label {
+  width:42px;
+  font-weight:600;
+  word-wrap:none;
+}
+b {
+  font-weight:600;
+}
+footer a {
+  color:black;
+  text-decoration:none;
+  font-weight:normal;
+}
+footer a:hover {
+  color:black;
+  text-decoration: underline;
+  font-weight:bold;
+  text-decoration:none;
+}
+footer {
+  line-height:18px;
+  font-size:13px;
+  padding:15px;
+}
+#made-with, #made-with a {
+  font-weight:600;
+}
+#made-with a:hover {
+  font-weight:bold;
+}
+hr {
+  margin:30px;
+  /*
+  height: 1px;
+  background-color:#636e85;
+  border: none;
+  */
+}
+button {
+  background-color:#20293d;
+  color:white;
+  border:0px;
+  padding:4px 12px;
+  border-radius:6px;
+}
+button:focus {
+    outline: none;
+}
+/* DESKTOP VIEW */
+@media (min-width: 600px) {
+  #hide-on-desktop {
+    display:none;
+  }
+  #line-two {
+    letter-spacing:.2px;
+  }
+  .txid {
+    font-size:15px;
+  }
+  #footer-social {
+    line-height:10px;
+  }
+}
+
+/* MOBILE VIEW */
+@media (max-width: 599px) {
+  #hide-on-mobile {
+    display:none;
+  }
+  input {
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<center>
+<div id="main">
+<br><br><br><br><br><br>
+
+<img src=myLogos.jpg width=350 style="max-width:90%">
+<h1>Coming Soon!</h1>
+<br>
+<a href="demo.html"><button>See Demo</button></a>
+</div>
+
+
+<footer style="font-weight:400; font-size:16px; padding-bottom:23px; padding-top:22px; background-color:#f392d7; border-top:1px solid #1b2436;">
+  <div style="margin-bottom:14px; line-height:10px" id="made-with">
+    <a href=https://twitter.com/d_plus__plus target="_blank">Made with <img src="heart.jpg"</span> by D++</a><br>
+  </div>
+  <div id="footer-social" style="font-size:13px;"><script src="my-footer.js"></script></div>
+</footer>
+
+
+<script>
+function positionFooter() {
+  var extra = 45;
+  var pageHeight = $('#main').height();
+  var footerHeight = $('footer').height();
+  $('footer').css('margin-top', innerHeight - pageHeight - footerHeight - extra + 'px');
+}
+
+positionFooter();
+
+$(window).resize(function(){
+  positionFooter();
+});
+
+function truncate(input) {
+  var amount = 17
+  if (innerWidth < 600)
+    amount = 15;
+  var truncate = input.substring(0, amount) + '...' + input.substring(input.length-amount, input.length);
+  return "<span title=" + input + "><b style='font-weight:500'>" + truncate + "</b></span>";
+}
+
+function truncateTxid(input) {
+  var amount = 15;
+  if (innerWidth < 600) {
+    var truncate = input.substring(0, amount) + '...' + input.substring(input.length-amount, input.length);
+    return "<span title=" + input + ">" + truncate + "</span>";
+  }
+  return input;
+}
+
+function backupResult(response) {
+  var results = $('#backup-results');
+  if (response[3] == false) { // already backed up, no new backup needed? todo: match data ALSO todo: make sure they're unique!!
+      // need to validate that the xpubs received are correct
+      var txid1 = response[0][1];
+      var txid2 = response[1][1];
+      var txid3 = response[2][1];
+
+      var xpub1 = response[0][0];
+      var xpub2 = response[1][0];
+      var xpub3 = response[2][0];
+
+      var confirm1 = response[0][2];
+      var confirm2 = response[1][2];
+      var confirm3 = response[2][2];
+
+      var confirmed = false;
+
+      if (confirm1 && confirm2 && confirm3)
+        confirmed = true;
+
+      results.html("<br><b>Your data is already backed up.</b><br><br>" + truncate(xpub1) + " was found in transaction: <a class='txid' href=https://mempool.space/tx/" + txid1 + '>' + truncateTxid(txid1) + "</a><br><br>");
+      results.append(truncate(xpub2) + " was found in transaction: <a class='txid' href=https://mempool.space/tx/" + txid2 + ">" + truncateTxid(txid2) + "</a><br><br>");
+      results.append(truncate(xpub3) + " was found in transaction: <a class='txid' href=https://mempool.space/tx/" + txid3 + ">" + truncateTxid(txid3) + "</a></span>");
+
+      if (confirmed)
+        results.append("<br><br>These transactions are <b>confirmed</b>.");
+     else
+        results.append("<br><br><span style='color:red'>WARNING! The transactions containing this data are <i>not yet confirmed</i> on the bitcoin blockchain.</span>");
+      }
+}
+
+function retrieveResult(response) {
+  var xpub1 = $('#xpub1-lookup').val().trim();
+  var xpub2 = $('#xpub2-lookup').val().trim();
+  console.log(xpub1, xpub2);
+  if (response) {
+    var missingXpub = response.missingXpub;
+    var txid = response.txid;
+    var confirmed = response.confirmed;
+    if (missingXpub == xpub1 || missingXpub == xpub2) {
+      $('#retrieve-results').html("<br><b>We found a backup on chain, however it's a duplicate of one of the xpubs you provided:</b> " + missingXpub);
+    }
+    else {
+      $('#retrieve-results').html("<br><b>We successfully recovered your lost key:</b><br><textarea onclick='$(this).select();' style='width:100%; height:54px'>" + missingXpub + "</textarea>");
+      if (confirmed) {
+        $('#retrieve-results').append("<br><br><b>Found in transaction:</b> <a class='txid' href=https://mempool.space/tx/" + txid + ">" + truncateTxid(txid) + "</a>");
+        $('#retrieve-results').append("<br><br>This transaction is <b>confirmed</b>.");
+      }
+      else {
+        $('#retrieve-results').append("<br><br><b>Found in transaction:</b> <a class='txid' href=https://mempool.space/tx/" + txid + ">" + truncateTxid(txid) + "</a>");
+        $('#retrieve-results').append("<br><br><span style='color:red'>WARNING! The transaction containing this data is <i>not yet confirmed</i> on the bitcoin blockchain.</span>");
+      }
+    }
+
+  }
+  else {
+    $('#retrieve-results').html("We couldn't find a backup for your quorum.");
+  }
+}
+
+$('#my-form').submit(function() {
+
+/*
+  $('#result-div').hide();
+  $('#searching').show();
+  $('#back').hide();
+  */
+
+  $.ajax({
+       data: $(this).serialize(),
+       type: $(this).attr('method'),
+       url:  $(this).attr('action'),
+       success:  function(response) {
+               console.log(response);
+               retrieveResult(response);
+   },
+    error: function() {
+     $('#retrieve-results').html("<br><b>There was an error connecting to the server. Please try again later.</b>");
+   }
+  });
+});
+
+$('#my-form-backup').submit(function() {
+
+/*
+  $('#result-div').hide();
+  $('#searching').show();
+  $('#back').hide();
+  */
+
+  $.ajax({
+       data: $(this).serialize(),
+       type: $(this).attr('method'),
+       url:  $(this).attr('action'),
+       success:  function(response) {
+         console.log("hi");
+         console.log(response);
+         backupResult(response);
+      },
+       error: function() {
+         $('#backup-results').html("<br><b>There was an error connecting to the server. Please try again later.</b>");
+    }
+  });
+});
+
+$("input[type='text']").click(function () {
+   $(this).select();
+});
+
+$("textarea").click(function () {
+   $(this).select();
+});
+
+/*
+// AES
+// INIT
+var myString   = xpub3;
+var myPassword = xpub1 + xpub2;
+
+// PROCESS
+var encrypted = CryptoJS.AES.encrypt(myString, myPassword);
+var decrypted = CryptoJS.AES.decrypt(encrypted, myPassword);
+document.getElementById("demo0").innerHTML = myString;
+document.getElementById("demo1").innerHTML = encrypted;
+document.getElementById("demo2").innerHTML = decrypted;
+document.getElementById("demo3").innerHTML = decrypted.toString(CryptoJS.enc.Utf8);
+*/
+
+</script>
+</html>
